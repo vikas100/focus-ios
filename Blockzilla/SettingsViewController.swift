@@ -6,6 +6,7 @@ import Foundation
 import SnapKit
 import UIKit
 import Telemetry
+import LocalAuthentication
 
 class SettingsTableViewSearchCell: UITableViewCell {
     private let newLabel = SmartLabel()
@@ -81,13 +82,14 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     // Hold a strong reference to the block detector so it isn't deallocated
     // in the middle of its detection.
     private let detector = BlockerEnabledDetector.makeInstance()
-
+    private let context = LAContext()
+    private var biometricError: NSError?
     private var isSafariEnabled = false
     private let searchEngineManager: SearchEngineManager
     private var highlightsButton: UIBarButtonItem?
     private let whatsNew: WhatsNewDelegate
     
-    private let toggles = [
+    private var toggles = [
         BlockerToggle(label: UIConstants.strings.toggleSafari, setting: SettingsToggle.safari),
         BlockerToggle(label: UIConstants.strings.labelBlockAds, setting: SettingsToggle.blockAds, subtitle: UIConstants.strings.labelBlockAdsDescription),
         BlockerToggle(label: UIConstants.strings.labelBlockAnalytics, setting: SettingsToggle.blockAnalytics, subtitle: UIConstants.strings.labelBlockAnalyticsDescription),
@@ -118,9 +120,35 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewDidLoad() {
         view.backgroundColor = UIConstants.colors.background
-
         title = UIConstants.strings.settingsTitle
-
+        
+        // Add Face ID or Touch ID toggle as appropriate based on the device
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError) {
+            if context.biometryType == .faceID {
+                toggles.insert(BlockerToggle(label: UIConstants.strings.labelFaceIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelFaceIDLoginDescription),
+                               at: 5)
+            } else if context.biometryType == .touchID {
+                toggles.insert(BlockerToggle(label: UIConstants.strings.labelTouchIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelTouchIDLoginDescription),
+                               at: 5)
+            }
+        } else {
+            if let error = biometricError {
+                // Device supports biometrics but has no identities enrolled
+                if error.code == -7 {
+                    let toggle: BlockerToggle
+                    if AppInfo.currentDeviceSupportsFaceID() {
+                        toggle = BlockerToggle(label: UIConstants.strings.labelFaceIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelFaceIDLoginDescription)
+                        toggle.toggle.isEnabled = false
+                        toggles.insert(toggle, at: 5)
+                    } else if AppInfo.currentDeviceSupportsTouchID() {
+                        toggle = BlockerToggle(label: UIConstants.strings.labelTouchIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelTouchIDLoginDescription)
+                        toggle.toggle.isEnabled = false
+                        toggles.insert(toggle, at: 5)
+                    }
+                }
+            }
+        }
+        
         let navigationBar = navigationController!.navigationBar
         navigationBar.isTranslucent = false
         navigationBar.barTintColor = UIConstants.colors.background
@@ -294,7 +322,12 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         switch section {
         case 0: return 2 // Search.
         case 1: return 1 // Integration.
-        case 2: return 4 // Privacy.
+        case 2:
+            if AppInfo.currentDeviceSupportsTouchID() || AppInfo.currentDeviceSupportsFaceID() {
+                return 5
+            } else {
+                return 4
+            }
         case 3: return 1 // Performance.
         case 4: return 2 // Mozilla.
         default:

@@ -6,16 +6,20 @@ import Foundation
 import UIKit
 import SnapKit
 import Telemetry
+import LocalAuthentication
 
 class BrowserViewController: UIViewController {
     private class DrawerView: UIView {
         override var intrinsicContentSize: CGSize { return CGSize(width: 320, height: 0) }
     }
 
+    private var splashScreen: UIView?
+    private let context = LAContext()
+
     private let mainContainerView = UIView(frame: .zero)
     private let drawerContainerView = DrawerView(frame: .zero)
     private let drawerOverlayView = UIView()
-    
+
     private let webViewController = WebViewController()
     private let webViewContainer = UIView()
 
@@ -68,7 +72,7 @@ class BrowserViewController: UIViewController {
 
     private var shouldEnsureBrowsingMode = false
     private var initialUrl: URL?
-    
+
     static let userDefaultsTrackersBlockedKey = "lifetimeTrackersBlocked"
     static let userDefaultsShareTrackerStatsKeyOLD = "shareTrackerStats"
     static let userDefaultsShareTrackerStatsKeyNEW = "shareTrackerStatsNew"
@@ -78,10 +82,11 @@ class BrowserViewController: UIViewController {
         drawerContainerView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         KeyboardHelper.defaultHelper.addDelegate(delegate: self)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupBiometrics()
         view.addSubview(mainContainerView)
         view.addSubview(drawerContainerView)
 
@@ -150,7 +155,6 @@ class BrowserViewController: UIViewController {
         }
 
         browserToolbar.snp.makeConstraints { make in
-
             make.leading.trailing.equalTo(mainContainerView)
             toolbarBottomConstraint = make.bottom.equalTo(mainContainerView).constraint
         }
@@ -181,7 +185,7 @@ class BrowserViewController: UIViewController {
 
         // true if device is an iPad or is an iPhone in landscape mode
         showsToolsetInURLBar = (UIDevice.current.userInterfaceIdiom == .pad && (UIScreen.main.bounds.width == view.frame.size.width || view.frame.size.width > view.frame.size.height)) || (UIDevice.current.userInterfaceIdiom == .phone && view.frame.size.width > view.frame.size.height)
-        
+
         containWebView()
         createHomeView()
         createURLBar()
@@ -198,28 +202,65 @@ class BrowserViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        
+
         homeView?.setHighlightWhatsNew(shouldHighlight: shouldShowWhatsNew())
-        
         super.viewWillAppear(animated)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         // Prevent the keyboard from showing up until after the user has viewed the Intro.
         let userHasSeenIntro = UserDefaults.standard.integer(forKey: AppDelegate.prefIntroDone) == AppDelegate.prefIntroVersion
-        
+
         if userHasSeenIntro && !urlBar.inBrowsingMode {
             self.urlBar.becomeFirstResponder()
         }
-        
+
         super.viewDidAppear(animated)
     }
-    
+
+    private func setupBiometrics() {
+        self.context.localizedReason = UIConstants.strings.biometricReason
+        self.context.localizedCancelTitle = UIConstants.strings.newSessionFromBiometricFailure
+
+        // Register for foreground notification to check biometric authentication
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground, object: nil, queue: nil) { notification in
+            var biometricError: NSError?
+
+            // Check if user is already in a cleared session, or doesn't have biometrics enabled in settings
+            if self.webViewContainer.isHidden || !Settings.getToggle(SettingsToggle.biometricLogin) {
+                return
+            }
+
+            self.displaySplashScreen()
+
+            if self.context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &biometricError) {
+                self.context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: self.context.localizedReason) {
+                    [unowned self] (success, _) in
+
+                    DispatchQueue.main.async {
+                        self.hideSplashScreen()
+                        if success {
+                            self.showToolbars()
+                        } else {
+                            // Clear the browser session, as the user failed to authenticate
+                            self.resetBrowser()
+                        }
+                    }
+                }
+            } else {
+                // Ran into an error with biometrics, so disable them and clear the browser:
+                Settings.set(false, forToggle: SettingsToggle.biometricLogin)
+                self.resetBrowser()
+                self.hideSplashScreen()
+            }
+        }
+    }
+
     private func containWebView() {
         addChildViewController(webViewController)
         webViewContainer.addSubview(webViewController.view)
         webViewController.didMove(toParentViewController: self)
-
+        
         webViewController.view.snp.makeConstraints { make in
             make.edges.equalTo(webViewContainer.snp.edges)
         }
@@ -248,7 +289,7 @@ class BrowserViewController: UIViewController {
             homeView.removeFromSuperview()
         }
         self.homeView = homeView
-        
+
         if canShowTrackerStatsShareButton() && shouldShowTrackerStatsShareButton() {
             let numberOfTrackersBlocked = getNumberOfLifetimeTrackersBlocked()
             homeView.showTrackerStatsShareButton(text: String(format: UIConstants.strings.shareTrackerStatsLabel, String(numberOfTrackersBlocked)))
@@ -402,18 +443,47 @@ class BrowserViewController: UIViewController {
         urlBar.fillUrlBar(text: text)
     }
 
+    private func hideSplashScreen() {
+        if let splash = splashScreen {
+            splash.removeFromSuperview()
+        }
+    }
+
+    private func displaySplashScreen() {
+        let splashView = UIView()
+        splashView.backgroundColor = UIConstants.colors.background
+        mainContainerView.addSubview(splashView)
+
+        let logoImage = UIImageView(image: AppInfo.config.wordmark)
+        splashView.addSubview(logoImage)
+
+        splashView.snp.makeConstraints { make in
+            make.edges.equalTo(mainContainerView)
+        }
+
+        logoImage.snp.makeConstraints { make in
+            make.center.equalTo(splashView)
+        }
+
+        view.layoutIfNeeded()
+        splashView.layoutIfNeeded()
+
+        splashScreen = splashView
+        hideToolbars()
+    }
+
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        
+
         // Fixes the issue of a user fresh-opening Focus via Split View
         guard isViewLoaded else { return }
-        
+
         // UIDevice.current.orientation isn't reliable. See https://bugzilla.mozilla.org/show_bug.cgi?id=1315370#c5
         // As a workaround, consider the phone to be in landscape if the new width is greater than the height.
         showsToolsetInURLBar = (UIDevice.current.userInterfaceIdiom == .pad && (UIScreen.main.bounds.width == size.width || size.width > size.height)) || (UIDevice.current.userInterfaceIdiom == .phone && size.width > size.height)
         urlBar.updateConstraints()
         browserToolbar.updateConstraints()
-        
+
         coordinator.animate(alongsideTransition: { _ in
             self.urlBar.showToolset = self.showsToolsetInURLBar
 
@@ -448,19 +518,19 @@ class BrowserViewController: UIViewController {
         alertController.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width / 2.0, y: self.view.bounds.size.height / 2.0, width: 1.0, height: 1.0)
         present(alertController, animated: true, completion: nil)
     }
-    
+
     @objc private func selectLocationBar() {
         urlBar.becomeFirstResponder()
     }
-    
+
     @objc private func reload() {
         webViewController.reload()
     }
-    
+
     @objc private func goBack() {
         webViewController.goBack()
     }
-    
+
     @objc private func goForward() {
         webViewController.goForward()
     }
@@ -472,7 +542,7 @@ class BrowserViewController: UIViewController {
             urlBarContainer.isBright = false
         }
     }
-    
+
     override var keyCommands: [UIKeyCommand]? {
         return [
             UIKeyCommand(input: "l", modifierFlags: .command, action: #selector(BrowserViewController.selectLocationBar), discoverabilityTitle: UIConstants.strings.selectLocationBarTitle),
@@ -527,11 +597,11 @@ class BrowserViewController: UIViewController {
         return shouldShowTrackerStatsToUser == true &&
             getNumberOfLifetimeTrackersBlocked(userDefaults: userDefaults) >= 10
     }
-    
+
     private func getNumberOfLifetimeTrackersBlocked(userDefaults: UserDefaults = UserDefaults.standard) -> Int {
         return userDefaults.integer(forKey: BrowserViewController.userDefaultsTrackersBlockedKey)
     }
-    
+
     private func setNumberOfLifetimeTrackersBlocked(numberOfTrackers: Int) {
         UserDefaults.standard.set(numberOfTrackers, forKey: BrowserViewController.userDefaultsTrackersBlockedKey)
     }
@@ -638,7 +708,7 @@ extension BrowserViewController: BrowserToolsetDelegate {
 
     func browserToolsetDidPressSend(_ browserToolset: BrowserToolset) {
         guard let url = webViewController.url else { return }
-        
+
         let shareExtensionHelper = OpenUtils(url: url, webViewController: webViewController)
         let controller = shareExtensionHelper.buildShareViewController(url: url, title: webViewController.title, printFormatter: webViewController.printFormatter, anchor: browserToolset.sendButton)
 
@@ -654,10 +724,10 @@ extension BrowserViewController: HomeViewDelegate {
     func homeViewDidPressSettings(homeView: HomeView) {
         showSettings()
     }
-    
+
     func shareTrackerStatsButtonTapped() {
         Telemetry.default.recordEvent(category: TelemetryEventCategory.action, method: TelemetryEventMethod.share, object: TelemetryEventObject.trackerStatsShareButton)
-        
+
         let numberOfTrackersBlocked = getNumberOfLifetimeTrackersBlocked()
         let appStoreUrl = URL(string:String(format: "https://mzl.la/2GZBav0"))
         let text = String(format: UIConstants.strings.shareTrackerStatsText, AppInfo.productName, String(numberOfTrackersBlocked))
@@ -692,7 +762,7 @@ extension BrowserViewController: OverlayViewDelegate {
             urlBar.url = webViewController.url
             return
         }
-        
+
         var url = URIFixup.getURL(entry: text)
         if url == nil {
             Telemetry.default.recordEvent(category: TelemetryEventCategory.action, method: TelemetryEventMethod.typeQuery, object: TelemetryEventObject.searchBar)
@@ -909,7 +979,7 @@ extension BrowserViewController: WhatsNewDelegate {
         let counter = UserDefaults.standard.integer(forKey: AppDelegate.prefWhatsNewCounter)
         return counter != 0
     }
-    
+
     func didShowWhatsNew() {
         UserDefaults.standard.set(AppInfo.shortVersion, forKey: AppDelegate.prefWhatsNewDone)
         UserDefaults.standard.removeObject(forKey: AppDelegate.prefWhatsNewCounter)
@@ -928,7 +998,6 @@ extension BrowserViewController: TrackingProtectionSummaryDelegate {
             webViewController.disableTrackingProtection()
         }
 
-
         let telemetryEvent = TelemetryEvent(category: TelemetryEventCategory.action, method: TelemetryEventMethod.change, object: TelemetryEventObject.trackingProtectionToggle)
         telemetryEvent.addExtra(key: "to", value: enabled)
         Telemetry.default.recordEvent(telemetryEvent)
@@ -937,4 +1006,3 @@ extension BrowserViewController: TrackingProtectionSummaryDelegate {
         hideDrawer()
     }
 }
-
