@@ -58,6 +58,16 @@ class AppInfo {
     open class func isTesting() -> Bool {
         return ProcessInfo.processInfo.arguments.contains("testMode")
     }
+    
+    open class func hasConnectivity() -> Bool {
+        let status = Reach().connectionStatus()
+        switch status {
+        case .online(.wwan), .online(.wiFi):
+            return true
+        default:
+            return false
+        }
+    }
 
     static var isBetaBuild: Bool {
         return (Bundle.main.infoDictionary?["CFBundleIdentifier"] as? String)?.contains("enterprise") ?? false

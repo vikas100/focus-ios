@@ -167,6 +167,7 @@ struct UIConstants {
         static let labelBlockOther = NSLocalizedString("Settings.toggleBlockOther", value: "Block other content trackers", comment: "Label for toggle on main screen")
         static let labelBlockOtherDescription = NSLocalizedString("Settings.toggleBlockOtherDescription", value: "Enabling may cause some pages to behave unexpectedly", comment: "Description for 'Block other content Trackers'")
         static let labelBlockFonts = NSLocalizedString("Settings.toggleBlockFonts", value: "Block Web fonts", comment: "Label for toggle on main screen")
+        static let labelNoInternetConnection = NSLocalizedString("Label.NoInternetConnection", value: "No Internet Connection", comment: "Label when no internet is present")
         static let labelSendAnonymousUsageData = NSLocalizedString("Settings.toggleSendUsageData", value: "Send usage data", comment: "Label for Send Usage Data toggle on main screen")
         static let detailTextSendUsageData = NSLocalizedString("Settings.detailTextSendUsageData", value: "Mozilla strives to collect only what we need to provide and improve %@ for everyone.", comment: "Description associated to the Send Usage Data toggle on main screen. %@ is the app name (Focus/Klar)")
         static let openCancel = NSLocalizedString("Open.Cancel", value: "Cancel", comment: "Label in share alert to cancel the alert")
@@ -194,6 +195,7 @@ struct UIConstants {
         static let toggleSafari = NSLocalizedString("Settings.toggleSafari", value: "Safari", comment: "Safari toggle label on settings screen")
         static let urlBarCancel = NSLocalizedString("URL.cancelLabel", value: "Cancel", comment: "Label for cancel button shown when entering a URL or search")
         static let urlTextPlaceholder = NSLocalizedString("URL.placeholderText", value: "Search or enter address", comment: "Placeholder text shown in the URL bar before the user navigates to a page")
+        
         static let shareMenuOpenInFocus = NSLocalizedString("ShareMenu.OpenInFocus", value: "Open in %@", comment: "Text for the share menu option when a user wants to open a page in Focus.")
         static let shareMenuRequestDesktop = NSLocalizedString("ShareMenu.RequestDesktop", value: "Request Desktop Site", comment: "Text for the share menu option when a user wants to reload the site as a desktop")
         static let shareMenuGetTheFirefoxApp = NSLocalizedString("ShareMenu.GetFirefox", value: "Get the Firefox App", comment: "Text for the share menu option when a user wants to open a page in Firefox but doesn’t have it installed. This string will not wrap in the interface. Instead, it will truncate. To prevent this, please keep the localized string to 18 or fewer characters. If your string runs longer than 18 characters, you can use 'Get Firefox' as the basis for your string. However, if at all possible, we’d like to signal to the user that they will be going to the App Store and installing the application from there. That is why we are using Get and App in the en-US string.")
@@ -275,4 +277,9 @@ struct UIConstants {
         static let shareTrackerStatsLabel = NSLocalizedString("share.trackerStatsLabel", value: "%@ trackers blocked so far", comment: "Text used when the user shares their trackers blocked stats")
         static let shareTrackerStatsText = NSLocalizedString("share.trackerStatsText", value: "%@, the privacy browser from Mozilla, has already blocked %@ trackers for me. Fewer ads and trackers following me around means faster browsing! Get Focus for yourself here", comment: "The text shared to users after the user chooses to share there tracker stats")
     }
+    
+    struct notifications {
+        static let reachabilityStatusChanged = Notification.Name("ReachabilityStatusChanged")
+    }
+    
 }
