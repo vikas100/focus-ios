@@ -16,7 +16,8 @@
 		0BC928CE1E366A6E004AC581 /* AsianLocaleTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC928CD1E366A6E004AC581 /* AsianLocaleTest.swift */; };
 		1D3FEEA120C0A73D00FFAA8C /* RequestDesktopTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D3FEEA020C0A73D00FFAA8C /* RequestDesktopTest.swift */; };
 		1D47758820C1E66000C074AE /* CopyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D47758720C1E66000C074AE /* CopyTest.swift */; };
-		1D6E570F20C8842700CA3537 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6E570E20C8842700CA3537 /* Reachability.swift */; };
+		1D9AC0BF20C8942400C923AF /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9AC0BE20C8942300C923AF /* Reachability.swift */; };
+		1D9AC0C120C89CC400C923AF /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D9AC0BE20C8942300C923AF /* Reachability.swift */; };
 		1DD317E120BF1B3000DFA44E /* OnboardingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD317E020BF1B3000DFA44E /* OnboardingTest.swift */; };
 		1DE6DA2220BF410400CE337B /* QuickAddAutocompleteURLTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE6DA2120BF410400CE337B /* QuickAddAutocompleteURLTest.swift */; };
 		2825C3665AB14081B262F767 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D051AC1857A0EEEBB833D15 /* SystemConfiguration.framework */; };
@@ -229,7 +230,7 @@
 		1D051AC1857A0EEEBB833D15 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1D3FEEA020C0A73D00FFAA8C /* RequestDesktopTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDesktopTest.swift; sourceTree = "<group>"; };
 		1D47758720C1E66000C074AE /* CopyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyTest.swift; sourceTree = "<group>"; };
-		1D6E570E20C8842700CA3537 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		1D9AC0BE20C8942300C923AF /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		1DD317E020BF1B3000DFA44E /* OnboardingTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTest.swift; sourceTree = "<group>"; };
 		1DE6DA2120BF410400CE337B /* QuickAddAutocompleteURLTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickAddAutocompleteURLTest.swift; sourceTree = "<group>"; };
 		29B90C056305836CB297FF79 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -955,7 +956,6 @@
 		D33A1A391BC476D40003D929 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				1D6E570E20C8842700CA3537 /* Reachability.swift */,
 				D35C11461E04AADA005FFFEF /* AppConfig.swift */,
 				D3E251FA1DAF0668005918DC /* AppInfo.swift */,
 				E4BF2E101BAD8AC500DA9D68 /* Settings.swift */,
@@ -1132,6 +1132,7 @@
 				D3E54FCE1DEFAE80003E1AFF /* OpenSearchParser.swift */,
 				D36C1BA91DB02EBB0073C1AB /* OpenUtils.swift */,
 				D3426AEA1DB7F8AA0016DA5A /* OverlayView.swift */,
+				1D9AC0BE20C8942300C923AF /* Reachability.swift */,
 				D3E251E81DAD714C005918DC /* SafariInstructionsViewController.swift */,
 				D3426AF51DB84E7A0016DA5A /* SearchEngine.swift */,
 				D3E54FD01DEFB063003E1AFF /* SearchEngineManager.swift */,
@@ -1601,7 +1602,7 @@
 				D3E2C9691DA3024800DEBE3D /* InsetButton.swift in Sources */,
 				F805722F1DBEE504004339C1 /* WebCacheUtils.swift in Sources */,
 				D30DF93E1DC1634F0064736C /* Toast.swift in Sources */,
-				1D6E570F20C8842700CA3537 /* Reachability.swift in Sources */,
+				1D9AC0BF20C8942400C923AF /* Reachability.swift in Sources */,
 				D33A1AB11BC48FAC0003D929 /* SettingsViewController.swift in Sources */,
 				747ADA181FC38EFC00970132 /* IntroViewController.swift in Sources */,
 				D30AEEBB1DE4CB1B0096A2E7 /* FileManagerExtensions.swift in Sources */,
@@ -1641,6 +1642,7 @@
 			files = (
 				E4BF2E121BAD8AC500DA9D68 /* Settings.swift in Sources */,
 				D35C11481E04AB14005FFFEF /* AppConfig.swift in Sources */,
+				1D9AC0C120C89CC400C923AF /* Reachability.swift in Sources */,
 				D3A6605B1DAF0904002BA72A /* AppInfo.swift in Sources */,
 				E4BF2DF11BACE92400DA9D68 /* ActionRequestHandler.swift in Sources */,
 				D3A6605A1DAF08FA002BA72A /* Utils.swift in Sources */,
