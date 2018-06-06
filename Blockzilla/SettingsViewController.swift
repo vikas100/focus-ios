@@ -121,33 +121,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         view.backgroundColor = UIConstants.colors.background
         title = UIConstants.strings.settingsTitle
-        var toggle: BlockerToggle?
-
-        // Add Face ID or Touch ID toggle as appropriate based on the device
-        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError) {
-            if context.biometryType == .faceID {
-                toggle = BlockerToggle(label: UIConstants.strings.labelFaceIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelFaceIDLoginDescription)
-            } else if context.biometryType == .touchID {
-               toggle = BlockerToggle(label: UIConstants.strings.labelTouchIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelTouchIDLoginDescription)
-            }
-        } else {
-            if let error = biometricError {
-                // Device supports biometrics but has no identities enrolled
-                if error.code == -7 {
-                    if AppInfo.currentDeviceSupportsFaceID() {
-                        toggle = BlockerToggle(label: UIConstants.strings.labelFaceIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelFaceIDLoginDescription)
-                        toggle?.toggle.isEnabled = false
-                    } else if AppInfo.currentDeviceSupportsTouchID() {
-                        toggle = BlockerToggle(label: UIConstants.strings.labelTouchIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelTouchIDLoginDescription)
-                        toggle?.toggle.isEnabled = false
-                    }
-                }
-            }
-        }
-        
-        if let tog = toggle {
-            toggles.insert(tog, at: 5)
-        }
         
         let navigationBar = navigationController!.navigationBar
         navigationBar.isTranslucent = false
@@ -176,7 +149,9 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         tableView.separatorColor = UIConstants.colors.settingsSeparator
         tableView.allowsSelection = true
         tableView.estimatedRowHeight = 44
-
+        
+        createBiometricLoginToggle()
+        
         toggles.forEach { blockerToggle in
             let toggle = blockerToggle.toggle
             toggle.onTintColor = UIConstants.colors.toggleOn
@@ -204,6 +179,33 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
+    }
+    
+    func createBiometricLoginToggle() {
+        let NO_IDENTITY_ERROR = -7
+        let canAuthenticateWithBiometrics = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError)
+        let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? false
+        guard (canAuthenticateWithBiometrics || deviceHasNoIdentities) else { return }
+        
+        let label: String
+        let subtitle: String
+        
+        switch (context.biometryType) {
+            case .faceID:
+                label = UIConstants.strings.labelFaceIDLogin
+                subtitle = UIConstants.strings.labelFaceIDLoginDescription
+            case .touchID:
+                label = UIConstants.strings.labelTouchIDLogin
+                subtitle = UIConstants.strings.labelTouchIDLoginDescription
+            default:
+                // Unknown biometric type
+                return
+        }
+        
+        let toggle = BlockerToggle(label: label, setting: SettingsToggle.biometricLogin, subtitle: subtitle)
+        toggle.toggle.isEnabled = !deviceHasNoIdentities
+        
+        toggles.insert(toggle, at: 5)
     }
 
     fileprivate func toggleForIndexPath(_ indexPath: IndexPath) -> BlockerToggle {
@@ -323,7 +325,11 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         case 0: return 2 // Search.
         case 1: return 1 // Integration.
         case 2:
-            if AppInfo.currentDeviceSupportsTouchID() || AppInfo.currentDeviceSupportsFaceID() {
+            let NO_IDENTITY_ERROR = -7
+            let canAuthenticateWithBiometrics = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError)
+            let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? false
+            
+            if (canAuthenticateWithBiometrics || deviceHasNoIdentities) {
                 return 5
             } else {
                 return 4
