@@ -121,32 +121,32 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         view.backgroundColor = UIConstants.colors.background
         title = UIConstants.strings.settingsTitle
-        
+        var toggle: BlockerToggle?
+
         // Add Face ID or Touch ID toggle as appropriate based on the device
         if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError) {
             if context.biometryType == .faceID {
-                toggles.insert(BlockerToggle(label: UIConstants.strings.labelFaceIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelFaceIDLoginDescription),
-                               at: 5)
+                toggle = BlockerToggle(label: UIConstants.strings.labelFaceIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelFaceIDLoginDescription)
             } else if context.biometryType == .touchID {
-                toggles.insert(BlockerToggle(label: UIConstants.strings.labelTouchIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelTouchIDLoginDescription),
-                               at: 5)
+               toggle = BlockerToggle(label: UIConstants.strings.labelTouchIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelTouchIDLoginDescription)
             }
         } else {
             if let error = biometricError {
                 // Device supports biometrics but has no identities enrolled
                 if error.code == -7 {
-                    let toggle: BlockerToggle
                     if AppInfo.currentDeviceSupportsFaceID() {
                         toggle = BlockerToggle(label: UIConstants.strings.labelFaceIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelFaceIDLoginDescription)
-                        toggle.toggle.isEnabled = false
-                        toggles.insert(toggle, at: 5)
+                        toggle?.toggle.isEnabled = false
                     } else if AppInfo.currentDeviceSupportsTouchID() {
                         toggle = BlockerToggle(label: UIConstants.strings.labelTouchIDLogin, setting: SettingsToggle.biometricLogin, subtitle: UIConstants.strings.labelTouchIDLoginDescription)
-                        toggle.toggle.isEnabled = false
-                        toggles.insert(toggle, at: 5)
+                        toggle?.toggle.isEnabled = false
                     }
                 }
             }
+        }
+        
+        if let tog = toggle {
+            toggles.insert(tog, at: 5)
         }
         
         let navigationBar = navigationController!.navigationBar
