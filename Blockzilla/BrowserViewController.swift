@@ -399,6 +399,17 @@ class BrowserViewController: UIViewController {
                 browserToolbar.animateHidden(false, duration: UIConstants.layout.toolbarFadeAnimationDuration)
             }
         }
+        
+        if !AppInfo.hasConnectivity() {
+            let alert = UIAlertController(title: UIConstants.strings.labelNoMobileDataConnection, message: UIConstants.strings.labelNoMobileDataConnectionDescription, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: UIConstants.strings.settingsTitle, style: .cancel, handler: { (action) in
+                // Go to settings app
+            }))
+            alert.addAction(UIAlertAction(title: UIConstants.strings.labelOK, style: .default, handler: nil))
+            
+            self.present(alert, animated: true)
+            return
+        }
 
         webViewController.load(URLRequest(url: url))
     }

@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupContinuousDeploymentTooling()
         setupErrorTracking()
         setupTelemetry()
+        Reach().monitorReachabilityChanges()
         TPStatsBlocklistChecker.shared.startup()
 
         // Disable localStorage.
