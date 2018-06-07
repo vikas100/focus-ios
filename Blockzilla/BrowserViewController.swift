@@ -275,6 +275,9 @@ class BrowserViewController: UIViewController {
         urlBar.showToolset = showsToolsetInURLBar
         mainContainerView.insertSubview(urlBar, aboveSubview: urlBarContainer)
 
+        let dragInteraction = UIDragInteraction(delegate: self)
+        urlBar.addInteraction(dragInteraction)
+        
         urlBar.snp.makeConstraints { make in
             urlBarTopConstraint = make.top.equalTo(mainContainerView.safeAreaLayoutGuide.snp.top).constraint
             topURLBarConstraints = [
@@ -540,6 +543,40 @@ class BrowserViewController: UIViewController {
     
     private func setNumberOfLifetimeTrackersBlocked(numberOfTrackers: Int) {
         UserDefaults.standard.set(numberOfTrackers, forKey: BrowserViewController.userDefaultsTrackersBlockedKey)
+    }
+}
+
+extension BrowserViewController: UIDragInteractionDelegate {
+    func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
+        guard let url = urlBar.url else { return [UIDragItem(itemProvider: NSItemProvider(object: "" as NSString))]}
+        
+        let stringItemProvider = NSItemProvider(object: url.absoluteString as NSString)
+        return [UIDragItem(itemProvider: stringItemProvider)]
+    }
+    
+    func dragInteraction(_ interaction: UIDragInteraction, previewForLifting item: UIDragItem, session: UIDragSession) -> UITargetedDragPreview? {
+        print("In lift")
+        return nil
+    }
+    
+    func dragInteraction(_ interaction: UIDragInteraction, sessionDidMove session: UIDragSession) {
+        for item in session.items {
+            item.previewProvider = {
+                guard let imagePreview = self.urlBar.convertToImage() else {
+                    return UIDragPreview(view: UIImageView(image: UIImage()))
+                }
+
+                /*
+                if let url = self.urlBar.url {
+                    return UIDragPreview(for: url)
+                }
+ */
+                
+                let imageView = UIImageView(image: imagePreview)
+                print("converting")
+                return UIDragPreview(view: imageView)
+            }
+        }
     }
 }
 
