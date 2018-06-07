@@ -400,13 +400,26 @@ class BrowserViewController: UIViewController {
             }
         }
         
-        if !AppInfo.hasConnectivity() {
-            let alert = UIAlertController(title: UIConstants.strings.labelNoMobileDataConnection, message: UIConstants.strings.labelNoMobileDataConnectionDescription, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: UIConstants.strings.settingsTitle, style: .cancel, handler: { (action) in
-                // Go to settings app
-            }))
-            alert.addAction(UIAlertAction(title: UIConstants.strings.labelOK, style: .default, handler: nil))
+        guard let hasDisplayedNetworkAlert = UserDefaults.standard.value(forKey: UIConstants.strings.userDefaultsHasDisplayedNetworkAlert) as? Bool else {
+            return
+        }
+        
+        if !AppInfo.hasConnectivity() && !hasDisplayedNetworkAlert {
+            UserDefaults.standard.set(true, forKey: UIConstants.strings.userDefaultsHasDisplayedNetworkAlert)
             
+            let alert = UIAlertController(title: UIConstants.strings.labelNoMobileDataConnection, message: UIConstants.strings.labelNoMobileDataConnectionDescription, preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: UIConstants.strings.settingsTitle, style: .cancel, handler: { (action) in
+                guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+                    return
+                }
+                
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    UIApplication.shared.open(settingsUrl, completionHandler: nil)
+                }
+            }))
+            
+            alert.addAction(UIAlertAction(title: UIConstants.strings.labelOK, style: .default, handler: nil))
             self.present(alert, animated: true)
             return
         }

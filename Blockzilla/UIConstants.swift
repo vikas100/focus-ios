@@ -278,5 +278,6 @@ struct UIConstants {
         static let autocompleteCustomURLAdded = NSLocalizedString("Autocomplete.customUrlAdded", value: "New Custom URL added.", comment: "Label for toast alerting a custom URL has been added")
         static let shareTrackerStatsLabel = NSLocalizedString("share.trackerStatsLabel", value: "%@ trackers blocked so far", comment: "Text used when the user shares their trackers blocked stats")
         static let shareTrackerStatsText = NSLocalizedString("share.trackerStatsText", value: "%@, the privacy browser from Mozilla, has already blocked %@ trackers for me. Fewer ads and trackers following me around means faster browsing! Get Focus for yourself here", comment: "The text shared to users after the user chooses to share there tracker stats")
+        static let userDefaultsHasDisplayedNetworkAlert = "hasDisplayedNetworkAlert"
     }
 }
