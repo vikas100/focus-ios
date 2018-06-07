@@ -421,9 +421,9 @@ class BrowserViewController: UIViewController {
             
             alert.addAction(UIAlertAction(title: UIConstants.strings.labelOK, style: .default, handler: nil))
             self.present(alert, animated: true)
-            return
         }
-
+    
+        print("loading request")
         webViewController.load(URLRequest(url: url))
     }
 
@@ -798,6 +798,7 @@ extension BrowserViewController: WebControllerDelegate {
     }
 
     func webController(_ controller: WebController, didFailNavigationWithError error: Error) {
+        print(error)
         urlBar.url = webViewController.url
         urlBar.isLoading = false
         browserToolbar.isLoading = false

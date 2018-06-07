@@ -78,7 +78,46 @@ class WebViewController: UIViewController, WebController {
     }
 
     // Browser proxy methods
-    func load(_ request: URLRequest) { browserView.load(request) }
+    func load(_ request: URLRequest) {
+        if !AppInfo.hasConnectivity() {
+            let label = UILabel()
+            label.text = "The Internet connection appears to be offline."
+            label.lineBreakMode = .byWordWrapping
+            label.textAlignment = .left
+            label.numberOfLines = 0
+           // label.font = UIConstants.fonts.aboutText
+            label.font = UIFont.systemFont(ofSize: 17)
+            label.font = UIFont.systemFont(ofSize: 18, weight: .light)
+            view.addSubview(label)
+
+            let button = UIButton()
+            button.setTitle("Try again", for: .normal)
+            button.backgroundColor = UIConstants.colors.focusLightBlue
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.layer.cornerRadius = 5
+            button.clipsToBounds = true
+            view.addSubview(button)
+            
+            guard let superview = view.superview else { return }
+            
+            label.snp.makeConstraints { make in
+                make.centerX.equalTo(superview)
+                make.width.equalTo(superview).offset(-100)
+                make.centerY.equalTo(view.snp.centerY)
+                make.height.equalTo(50)
+            }
+            
+            button.snp.makeConstraints { make in
+                make.top.equalTo(label.snp.bottom).offset(50)
+                make.centerX.equalTo(label.snp.centerX)
+                make.width.equalTo(label.snp.width)
+                make.height.equalTo(50)
+            }
+            
+            print("Can't connect")
+        }
+        browserView.load(request)
+    }
     func goBack() { browserView.goBack() }
     func goForward() { browserView.goForward() }
     func reload() { browserView.reload() }
