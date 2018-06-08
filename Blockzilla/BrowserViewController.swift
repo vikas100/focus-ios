@@ -196,6 +196,14 @@ class BrowserViewController: UIViewController {
         guard let url = initialUrl else { return }
         submit(url: url)
     }
+    
+    func createSiriShortcut() {
+        if #available(iOS 12, *) {
+            let intent = SearchIntent()
+            
+           // let interaction = INInteraction(intent: intent, response: nil)
+        } else { return }
+    }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent

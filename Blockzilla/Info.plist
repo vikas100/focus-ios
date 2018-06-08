@@ -57,6 +57,11 @@
 	<string>This lets you save and upload photos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This lets you save and upload photos.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>IntentIntent</string>
+		<string>SearchIntent</string>
+	</array>
 	<key>SentryDSN</key>
 	<string>$(SENTRY_DSN)</string>
 	<key>UILaunchStoryboardName</key>
