@@ -547,15 +547,34 @@ class BrowserViewController: UIViewController {
 }
 
 extension BrowserViewController: UIDragInteractionDelegate {
+    
     func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
         guard let urlText = urlBar.url?.absoluteString else { return [] }
+        
+        print("items for beginning")
         let provider = NSItemProvider(object: urlText as NSItemProviderWriting)
         let item = UIDragItem(itemProvider: provider)
         item.localObject = urlText
         return [item]
     }
     
+    func dragInteraction(_ interaction: UIDragInteraction, previewForLifting item: UIDragItem, session: UIDragSession) -> UITargetedDragPreview? {
+        print("lift")
+        
+        
+        let label = UILabel(frame: urlBar.frame)
+        label.text = urlBar.url?.absoluteDisplayString
+        label.textColor = UIColor.white
+        label.backgroundColor = UIColor.black
+        
+        let center = CGPoint(x: urlBar.bounds.midX, y: urlBar.bounds.midY)
+        let target = UIDragPreviewTarget(container: urlBar, center: center)
+
+        return UITargetedDragPreview(view: label, parameters: UIDragPreviewParameters(), target: target)
+    }
+    
     func dragInteraction(_ interaction: UIDragInteraction, sessionDidMove session: UIDragSession) {
+        print("item")
         for item in session.items {
             item.previewProvider = {
                 guard let imagePreview = self.urlBar.convertToImage() else {
