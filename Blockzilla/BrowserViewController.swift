@@ -548,10 +548,8 @@ class BrowserViewController: UIViewController {
 
 extension BrowserViewController: UIDragInteractionDelegate {
     func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
-        
-        guard let urlText = urlBar.url as? String else { return [] }
-        
-        let provider = NSItemProvider(object: urlBar as! NSItemProviderWriting)
+        guard let urlText = urlBar.url?.absoluteString else { return [] }
+        let provider = NSItemProvider(object: urlText as NSItemProviderWriting)
         let item = UIDragItem(itemProvider: provider)
         item.localObject = urlText
         return [item]
