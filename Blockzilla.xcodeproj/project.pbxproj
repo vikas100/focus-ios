@@ -1306,9 +1306,9 @@
 					};
 					745DC5D91F39221100661635 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = 43AQ936H96;
+						DevelopmentTeam = Q72GMFLLR4;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					D8E0155B1FCF409F00CA3B9F = {
 						CreatedOnToolsVersion = 9.1;
@@ -1322,9 +1322,9 @@
 					};
 					E4BF2DD21BACE8CA00DA9D68 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43AQ936H96;
+						DevelopmentTeam = Q72GMFLLR4;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -1333,9 +1333,9 @@
 					};
 					E4BF2DEB1BACE92400DA9D68 = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 43AQ936H96;
+						DevelopmentTeam = Q72GMFLLR4;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -2406,9 +2406,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				DISPLAY_NAME = "Firefox Klar";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2431,10 +2432,10 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
-				PROVISIONING_PROFILE = "bbbf3651-0c25-4720-884b-f9253d8feccd";
-				PROVISIONING_PROFILE_SPECIFIER = "Klar Share Profile";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -2468,10 +2469,11 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				DISPLAY_NAME = "Firefox Focus";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2487,10 +2489,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
-				PROVISIONING_PROFILE = "8e299321-8c8c-4811-bafe-ac535f64344c";
-				PROVISIONING_PROFILE_SPECIFIER = "Focus Share Profile";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -2525,9 +2527,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				DISPLAY_NAME = "Firefox Klar";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2543,10 +2546,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
-				PROVISIONING_PROFILE = "bbbf3651-0c25-4720-884b-f9253d8feccd";
-				PROVISIONING_PROFILE_SPECIFIER = "Klar Share Profile";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -2581,9 +2584,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				DISPLAY_NAME = "Firefox Focus";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2599,10 +2603,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
-				PROVISIONING_PROFILE = "8e299321-8c8c-4811-bafe-ac535f64344c";
-				PROVISIONING_PROFILE_SPECIFIER = "Focus Share Profile";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -2637,9 +2641,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				DISPLAY_NAME = "Firefox Focus";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2655,7 +2660,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus.enterprise.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -2692,9 +2697,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				DISPLAY_NAME = "Firefox Klar";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2710,7 +2716,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar.enterprise.ShareExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ShareExtension;
 				PRODUCT_NAME = ShareExtension;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -2782,7 +2788,8 @@
 				BUNDLE_ID_SUFFIX = .beta;
 				CODE_SIGN_ENTITLEMENTS = FocusEnterprise.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2799,8 +2806,9 @@
 					BuddyBuildSDK,
 				);
 				OTHER_SWIFT_FLAGS = "-DFOCUS";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus.enterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer;
 				PRODUCT_NAME = "Firefox Focus";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BUDDYBUILD;
 				SWIFT_OBJC_BRIDGING_HEADER = "Blockzilla-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -2814,12 +2822,14 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = FocusEnterprise.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				INFOPLIST_FILE = ContentBlocker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus.enterprise.ContentBlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ContentBlocker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = arm64;
@@ -2886,7 +2896,8 @@
 				BUNDLE_ID_SUFFIX = .beta;
 				CODE_SIGN_ENTITLEMENTS = KlarEnterprise.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2903,8 +2914,9 @@
 					BuddyBuildSDK,
 				);
 				OTHER_SWIFT_FLAGS = "-DKLAR";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar.enterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer;
 				PRODUCT_NAME = "Firefox Klar";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BUDDYBUILD;
 				SWIFT_OBJC_BRIDGING_HEADER = "Blockzilla-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -2918,12 +2930,14 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = KlarEnterprise.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				INFOPLIST_FILE = ContentBlocker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar.enterprise.ContentBlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ContentBlocker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = arm64;
@@ -3047,7 +3061,8 @@
 				BUNDLE_ID_SUFFIX = .dev;
 				CODE_SIGN_ENTITLEMENTS = Focus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3063,10 +3078,10 @@
 					BuddyBuildSDK,
 				);
 				OTHER_SWIFT_FLAGS = "-DFOCUS";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer;
 				PRODUCT_NAME = "Firefox Focus";
-				PROVISIONING_PROFILE = "12379ceb-99e8-48c2-b270-64131bd2fb24";
-				PROVISIONING_PROFILE_SPECIFIER = "Focus Development Profile";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG BUDDYBUILD";
 				SWIFT_OBJC_BRIDGING_HEADER = "Blockzilla-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -3080,12 +3095,14 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Focus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				INFOPLIST_FILE = ContentBlocker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus.ContentBlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ContentBlocker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = arm64;
@@ -3153,7 +3170,8 @@
 				CODE_SIGN_ENTITLEMENTS = Focus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3165,10 +3183,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DFOCUS";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer;
 				PRODUCT_NAME = "Firefox Focus";
-				PROVISIONING_PROFILE = "a0e006fd-308f-466b-8037-c39e3e78188e";
-				PROVISIONING_PROFILE_SPECIFIER = "Focus Distribution";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Blockzilla-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -3182,14 +3200,15 @@
 				CODE_SIGN_ENTITLEMENTS = Focus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				INFOPLIST_FILE = ContentBlocker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Focus.ContentBlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ContentBlocker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "c9ecd7a2-c454-4991-a6d0-fcea18c3a475";
-				PROVISIONING_PROFILE_SPECIFIER = "Focus ContentBlocker Distribution";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = arm64;
@@ -3994,7 +4013,8 @@
 				BUNDLE_ID_SUFFIX = .dev;
 				CODE_SIGN_ENTITLEMENTS = Klar.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4010,8 +4030,9 @@
 					BuddyBuildSDK,
 				);
 				OTHER_SWIFT_FLAGS = "-DKLAR";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer;
 				PRODUCT_NAME = "Firefox Klar";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG BUDDYBUILD";
 				SWIFT_OBJC_BRIDGING_HEADER = "Blockzilla-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
@@ -4029,7 +4050,8 @@
 				CODE_SIGN_ENTITLEMENTS = Klar.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4041,10 +4063,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DKLAR";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer;
 				PRODUCT_NAME = "Firefox Klar";
-				PROVISIONING_PROFILE = "2eae84bd-8fb1-4984-b330-8c4a90e69457";
-				PROVISIONING_PROFILE_SPECIFIER = "Klar Distribution";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Blockzilla-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -4057,12 +4079,14 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = Klar.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				INFOPLIST_FILE = ContentBlocker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar.ContentBlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ContentBlocker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = arm64;
@@ -4075,14 +4099,15 @@
 				CODE_SIGN_ENTITLEMENTS = Klar.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				DEVELOPMENT_TEAM = 43AQ936H96;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q72GMFLLR4;
 				INFOPLIST_FILE = ContentBlocker/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.Klar.ContentBlocker;
+				PRODUCT_BUNDLE_IDENTIFIER = org.mozilla.ios.FocusSawyer.ContentBlocker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "761240c5-5a7a-4f61-aefd-c3cf2e67a8dd";
-				PROVISIONING_PROFILE_SPECIFIER = "Klar ContentBlocker Distribution";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = arm64;
