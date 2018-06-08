@@ -548,15 +548,13 @@ class BrowserViewController: UIViewController {
 
 extension BrowserViewController: UIDragInteractionDelegate {
     func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
-        guard let url = urlBar.url else { return [UIDragItem(itemProvider: NSItemProvider(object: "" as NSString))]}
         
-        let stringItemProvider = NSItemProvider(object: url.absoluteString as NSString)
-        return [UIDragItem(itemProvider: stringItemProvider)]
-    }
-    
-    func dragInteraction(_ interaction: UIDragInteraction, previewForLifting item: UIDragItem, session: UIDragSession) -> UITargetedDragPreview? {
-        print("In lift")
-        return nil
+        guard let urlText = urlBar.url as? String else { return [] }
+        
+        let provider = NSItemProvider(object: urlBar as! NSItemProviderWriting)
+        let item = UIDragItem(itemProvider: provider)
+        item.localObject = urlText
+        return [item]
     }
     
     func dragInteraction(_ interaction: UIDragInteraction, sessionDidMove session: UIDragSession) {
@@ -566,11 +564,11 @@ extension BrowserViewController: UIDragInteractionDelegate {
                     return UIDragPreview(view: UIImageView(image: UIImage()))
                 }
 
-                /*
+                
                 if let url = self.urlBar.url {
                     return UIDragPreview(for: url)
                 }
- */
+ 
                 
                 let imageView = UIImageView(image: imagePreview)
                 print("converting")
