@@ -6,6 +6,7 @@ import Foundation
 import UIKit
 import SnapKit
 import Telemetry
+import Intents
 
 class BrowserViewController: UIViewController {
     private class DrawerView: UIView {
@@ -190,11 +191,22 @@ class BrowserViewController: UIViewController {
         NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: UIConstants.strings.requestDesktopNotification), object: nil, queue: nil)  { _ in
             self.webViewController.requestDesktop()
         }
-
+        
+        setupSiriShortcut()
+        
         guard shouldEnsureBrowsingMode else { return }
         ensureBrowsingMode()
         guard let url = initialUrl else { return }
         submit(url: url)
+        
+    }
+    
+    func searchFor(query: String) {
+        overlayView(self.overlayView, didSearchForQuery: query)
+    }
+    
+    func setupSiriShortcut() {
+        
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -722,10 +734,21 @@ extension BrowserViewController: OverlayViewDelegate {
         urlBar.dismiss()
     }
 
-    func overlayView(_ overlayView: OverlayView, didSearchForQuery query: String) {
+    func overlayView(_ overlayView: OverlayView = overlayView, didSearchForQuery query: String) {
         if let url = searchEngineManager.activeEngine.urlForQuery(query) {
             Telemetry.default.recordEvent(category: TelemetryEventCategory.action, method: TelemetryEventMethod.selectQuery, object: TelemetryEventObject.searchBar)
             Telemetry.default.recordSearch(location: .actionBar, searchEngine: searchEngineManager.activeEngine.getNameOrCustom())
+            
+            if #available(iOS 12.0, *) {
+                let search = Search(query: query)
+                let interaction = INInteraction(intent: search.intent, response: nil)
+                interaction.donate { (err) in
+                    if let error = err {
+                        print("Did fail: \(error.localizedDescription)")
+                    }
+                }
+            }
+            
             submit(url: url)
             urlBar.url = url
         }

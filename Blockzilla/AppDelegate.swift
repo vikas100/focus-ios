@@ -4,6 +4,7 @@
 
 import UIKit
 import Telemetry
+import Intents
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -222,6 +223,50 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let orientation = UIDevice.current.orientation.isPortrait ? "Portrait" : "Landscape"
         Telemetry.default.recordEvent(category: TelemetryEventCategory.action, method: TelemetryEventMethod.background, object:
             TelemetryEventObject.app, value: nil, extras: ["orientation": orientation])
+    }
+}
+
+// MARK: - SiriKit Extension
+extension AppDelegate {
+    /// - Tag: handle_in_app_delegate
+    func application(_ application: UIApplication,
+                     continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+       
+        if #available(iOS 12, *) {
+            if userActivity.activityType == "SearchIntent" {
+                guard let intent = userActivity.interaction?.intent as? SearchIntent, let search = Search(from: intent) else { return false }
+                browserViewController.searchFor(query: search.intent.query ?? "")
+                
+                // TODO: Force this to be the view on screen (present...?)
+                return true
+            }
+            
+        }
+    
+        
+        
+        return false
+    }
+    
+    private func handle(_ intent: OrderSoupIntent) {
+        let handler = OrderSoupIntentHandler()
+        handler.handle(intent: intent) { (response) in
+            if response.code != .success {
+                os_log("Quantity must be greater than 0 to add to order")
+            }
+        }
+    }
+    
+    private func handleUserActivity() {
+        guard let window = window,
+            let rootViewController = window.rootViewController as? UINavigationController,
+            let orderHistoryViewController = rootViewController.viewControllers.first as? OrderHistoryTableViewController else {
+                os_log("Failed to access OrderHistoryTableViewController.")
+                return
+        }
+        let segue = OrderHistoryTableViewController.SegueIdentifiers.soupMenu.rawValue
+        orderHistoryViewController.performSegue(withIdentifier: segue, sender: nil)
     }
 }
 
