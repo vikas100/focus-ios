@@ -182,11 +182,13 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func createBiometricLoginToggle() {
-        let NO_IDENTITY_ERROR = -7
-        let canAuthenticateWithBiometrics = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError)
-        let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? false
-        guard (canAuthenticateWithBiometrics || deviceHasNoIdentities) else { return }
+        if !shouldShowBiometricsToggle() {
+            print("returning")
+            return
+        }
         
+        let NO_IDENTITY_ERROR = -7
+        let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? false
         let label: String
         let subtitle: String
         
@@ -293,11 +295,14 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
 
             cell = searchCell
         default:
-            if indexPath.section == 4 && indexPath.row == 1 {
+            
+            if indexPath.section == 5 && indexPath.row == 1 && (indexPath.section == 4 && !shouldShowBiometricsToggle()){
                 cell = UITableViewCell(style: .subtitle, reuseIdentifier: "aboutCell")
                 cell.textLabel?.text = UIConstants.strings.aboutTitle
                 cell.accessibilityIdentifier = "settingsViewController.about"
             } else {
+                print("Section: \(indexPath.section), row: \(indexPath.row)")
+                
                 cell = UITableViewCell(style: .subtitle, reuseIdentifier: "toggleCell")
                 let toggle = toggleForIndexPath(indexPath)
                 cell.textLabel?.text = toggle.label
@@ -321,29 +326,49 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0: return 2 // Search.
-        case 1: return 1 // Integration.
-        case 2:
-            let NO_IDENTITY_ERROR = -7
-            let canAuthenticateWithBiometrics = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError)
-            let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? false
-            
-            if (canAuthenticateWithBiometrics || deviceHasNoIdentities) {
-                return 5
-            } else {
-                return 4
+        if shouldShowBiometricsToggle() {
+            switch section {
+            case 0: return 2 // Search.
+            case 1: return 1 // Integration.
+            case 2: return 4 // Privacy.
+            case 3: return 1 // Opening App.
+            case 4: return 1 // Performance.
+            case 5: return 2 // Mozilla.
+            default:
+                assertionFailure("Invalid section")
+                return 0
             }
-        case 3: return 1 // Performance.
-        case 4: return 2 // Mozilla.
-        default:
-            assertionFailure("Invalid section")
-            return 0
+        } else {
+            switch section {
+            case 0: return 2 // Search.
+            case 1: return 1 // Integration.
+            case 2: return 4 // Privacy.
+            case 3: return 1 // Performance.
+            case 4: return 2 // Mozilla.
+            default:
+                assertionFailure("Invalid section")
+                return 0
+            }
         }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
+        if shouldShowBiometricsToggle() {
+            return 6
+        }
         return 5
+    }
+    
+    func shouldShowBiometricsToggle() -> Bool {
+        let NO_IDENTITY_ERROR = -7
+        let canAuthenticateWithBiometrics = context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &biometricError)
+        let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? false
+        
+        if (canAuthenticateWithBiometrics || deviceHasNoIdentities) {
+            return true
+        }
+        
+        return false
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -380,16 +405,32 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let labelText: String
         var groupingOffset = 16
-        switch section {
-        case 0:
-            labelText = UIConstants.strings.settingsSearchTitle
-            groupingOffset = 3
-        case 1: labelText = UIConstants.strings.toggleSectionIntegration
-        case 2: labelText = UIConstants.strings.toggleSectionPrivacy
-        case 3: labelText = UIConstants.strings.toggleSectionPerformance
-        case 4: labelText = UIConstants.strings.toggleSectionMozilla
-        default: return nil
+        
+        if shouldShowBiometricsToggle() {
+            switch section {
+            case 0:
+                labelText = UIConstants.strings.settingsSearchTitle
+                groupingOffset = 3
+            case 1: labelText = UIConstants.strings.toggleSectionIntegration
+            case 2: labelText = UIConstants.strings.toggleSectionPrivacy
+            case 3: labelText = UIConstants.strings.toggleSectionAppOpening
+            case 4: labelText = UIConstants.strings.toggleSectionPerformance
+            case 5: labelText = UIConstants.strings.toggleSectionMozilla
+            default: return nil
+            }
+        } else {
+            switch section {
+            case 0:
+                labelText = UIConstants.strings.settingsSearchTitle
+                groupingOffset = 3
+            case 1: labelText = UIConstants.strings.toggleSectionIntegration
+            case 2: labelText = UIConstants.strings.toggleSectionPrivacy
+            case 3: labelText = UIConstants.strings.toggleSectionPerformance
+            case 4: labelText = UIConstants.strings.toggleSectionMozilla
+            default: return nil
+            }
         }
+        
 
         // Hack: We want the header view's margin to match the cells, so we create an empty
         // cell with a blank space as text to layout the text label. From there, we can define
