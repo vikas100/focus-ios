@@ -296,7 +296,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
             cell = searchCell
         default:
             
-            if indexPath.section == 5 && indexPath.row == 1 && (indexPath.section == 4 && !shouldShowBiometricsToggle()){
+            if indexPath.section == 5 && indexPath.row == 1 || (indexPath.section == 4 && !shouldShowBiometricsToggle()){
                 cell = UITableViewCell(style: .subtitle, reuseIdentifier: "aboutCell")
                 cell.textLabel?.text = UIConstants.strings.aboutTitle
                 cell.accessibilityIdentifier = "settingsViewController.about"
