@@ -258,44 +258,46 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        switch section {
-        case 2:
-            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-            let learnMore = NSAttributedString(string: UIConstants.strings.learnMore, attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.toggleOn])
-            let subtitle = NSMutableAttributedString(string: String(format: UIConstants.strings.trackersDescriptionLabel, AppInfo.productName), attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.settingsDetailLabel])
-            let space = NSAttributedString(string: " ", attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.toggleOn])
-            subtitle.append(space)
-            subtitle.append(learnMore)
-            cell.detailTextLabel?.attributedText = subtitle
-            cell.detailTextLabel?.numberOfLines = 0
-            cell.accessibilityIdentifier = "SettingsViewController.trackingProtectionLearnMoreCell"
-            cell.selectionStyle = .none
-            cell.backgroundColor = UIConstants.colors.background
-            cell.layoutMargins = UIEdgeInsets.zero
-
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedTrackingProtectionLearnMoreFooter))
-            cell.addGestureRecognizer(tapGesture)
-
-            return cell
-        case 4:
-            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-            let learnMore = NSAttributedString(string: UIConstants.strings.learnMore, attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.toggleOn])
-            let subtitle = NSMutableAttributedString(string: String(format: UIConstants.strings.detailTextSendUsageData, AppInfo.productName), attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.settingsDetailLabel])
-            let space = NSAttributedString(string: " ", attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.toggleOn])
-            subtitle.append(space)
-            subtitle.append(learnMore)
-            cell.detailTextLabel?.attributedText = subtitle
-            cell.detailTextLabel?.numberOfLines = 0
-            cell.accessibilityIdentifier = "SettingsViewController.learnMoreCell"
-            cell.selectionStyle = .none
-            cell.backgroundColor = UIConstants.colors.background
-            cell.layoutMargins = UIEdgeInsets.zero
-
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedLearnMoreFooter))
-            cell.addGestureRecognizer(tapGesture)
-
-            return cell
-        default: return nil
+        
+        switch sections[section] {
+            case .privacy:
+                let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+                let learnMore = NSAttributedString(string: UIConstants.strings.learnMore, attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.toggleOn])
+                let subtitle = NSMutableAttributedString(string: String(format: UIConstants.strings.trackersDescriptionLabel, AppInfo.productName), attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.settingsDetailLabel])
+                let space = NSAttributedString(string: " ", attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.toggleOn])
+                subtitle.append(space)
+                subtitle.append(learnMore)
+                cell.detailTextLabel?.attributedText = subtitle
+                cell.detailTextLabel?.numberOfLines = 0
+                cell.accessibilityIdentifier = "SettingsViewController.trackingProtectionLearnMoreCell"
+                cell.selectionStyle = .none
+                cell.backgroundColor = UIConstants.colors.background
+                cell.layoutMargins = UIEdgeInsets.zero
+                
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedTrackingProtectionLearnMoreFooter))
+                cell.addGestureRecognizer(tapGesture)
+                
+                return cell
+            case .mozilla:
+                let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+                let learnMore = NSAttributedString(string: UIConstants.strings.learnMore, attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.toggleOn])
+                let subtitle = NSMutableAttributedString(string: String(format: UIConstants.strings.detailTextSendUsageData, AppInfo.productName), attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.settingsDetailLabel])
+                let space = NSAttributedString(string: " ", attributes: [NSAttributedStringKey.foregroundColor : UIConstants.colors.toggleOn])
+                subtitle.append(space)
+                subtitle.append(learnMore)
+                cell.detailTextLabel?.attributedText = subtitle
+                cell.detailTextLabel?.numberOfLines = 0
+                cell.accessibilityIdentifier = "SettingsViewController.learnMoreCell"
+                cell.selectionStyle = .none
+                cell.backgroundColor = UIConstants.colors.background
+                cell.layoutMargins = UIEdgeInsets.zero
+                
+                let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedLearnMoreFooter))
+                cell.addGestureRecognizer(tapGesture)
+                
+                return cell
+            default:
+                return nil
         }
     }
 
@@ -312,13 +314,13 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == 4 || section == 2 ? 50 : 0
+        return sections[section] == .privacy || sections[section] == .mozilla ? 50 : 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell
-        switch indexPath.section {
-        case 0:
+        switch sections[indexPath.section] {
+        case .search:
             guard let searchCell = tableView.dequeueReusableCell(withIdentifier: "searchCell") as? SettingsTableViewSearchCell else { fatalError("No Search Cells!") }
 
             let label = indexPath.row == 0 ? UIConstants.strings.settingsSearchLabel : UIConstants.strings.settingsAutocompleteSection
