@@ -41,6 +41,7 @@ protocol WebControllerDelegate: class {
 class WebViewController: UIViewController, WebController {
     weak var delegate: WebControllerDelegate?
 
+    private var errorView = UIView()
     private var browserView = WKWebView()
     var onePasswordExtensionItem: NSExtensionItem!
     private var progressObserver: NSKeyValueObservation?
@@ -72,6 +73,7 @@ class WebViewController: UIViewController, WebController {
         browserView.load(URLRequest(url: URL(string: "about:blank")!))
         browserView.navigationDelegate = nil
         browserView.removeFromSuperview()
+        errorView.removeFromSuperview()
         trackingProtectionStatus = .on(TPPageStats())
         browserView = WKWebView()
         setupWebview()
@@ -79,44 +81,64 @@ class WebViewController: UIViewController, WebController {
 
     // Browser proxy methods
     func load(_ request: URLRequest) {
-        if !AppInfo.hasConnectivity() {
-            let label = UILabel()
-            label.text = "The Internet connection appears to be offline."
-            label.lineBreakMode = .byWordWrapping
-            label.textAlignment = .left
-            label.numberOfLines = 0
-           // label.font = UIConstants.fonts.aboutText
-            label.font = UIFont.systemFont(ofSize: 17)
-            label.font = UIFont.systemFont(ofSize: 18, weight: .light)
-            view.addSubview(label)
-
-            let button = UIButton()
-            button.setTitle("Try again", for: .normal)
-            button.backgroundColor = UIConstants.colors.focusLightBlue
-            button.setTitleColor(UIColor.white, for: .normal)
-            button.layer.cornerRadius = 5
-            button.clipsToBounds = true
-            view.addSubview(button)
-            
-            guard let superview = view.superview else { return }
-            
-            label.snp.makeConstraints { make in
-                make.centerX.equalTo(superview)
-                make.width.equalTo(superview).offset(-100)
-                make.centerY.equalTo(view.snp.centerY)
-                make.height.equalTo(50)
-            }
-            
-            button.snp.makeConstraints { make in
-                make.top.equalTo(label.snp.bottom).offset(50)
-                make.centerX.equalTo(label.snp.centerX)
-                make.width.equalTo(label.snp.width)
-                make.height.equalTo(50)
-            }
-            
-            print("Can't connect")
+        
+        if AppInfo.hasConnectivity() {
+            errorView.removeFromSuperview()
+            browserView.load(request)
+            return
         }
-        browserView.load(request)
+        
+        reset()
+        setupErrorView()
+        stop()
+        
+      //  let nav = WKNavigation()
+     //   webView(browserView, didFail: WKNavigation, withError: <#T##Error#>)
+        // func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+
+        
+        
+        let label = UILabel()
+        let text = "The Internet connection appears to be offline."
+        let attrString = NSMutableAttributedString(string: text)
+        let style = NSMutableParagraphStyle()
+        
+        style.lineHeightMultiple = 1.5
+        style.lineBreakMode = .byWordWrapping
+        attrString.addAttribute(NSAttributedStringKey.paragraphStyle, value: style, range: NSRange(location: 0, length: text.count))
+        label.attributedText = attrString
+        label.numberOfLines = 0
+        label.font = UIFont.systemFont(ofSize: 16, weight: .light)
+
+        errorView.addSubview(label)
+
+        let button = UIButton()
+        button.setTitle("Try Again", for: .normal)
+        //button.backgroundColor = UIConstants.colors.focusLightBlue
+        button.backgroundColor = UIConstants.colors.settingsLink
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        button.layer.cornerRadius = 12
+        button.clipsToBounds = true
+        
+        errorView.addSubview(button)
+        
+        guard let superview = view.superview else { return }
+        
+        label.snp.makeConstraints { make in
+            make.leading.equalTo(superview).offset(40)
+            make.trailing.equalTo(superview).offset(-40)
+            make.centerY.equalTo(view.snp.centerY).offset(-80)
+        }
+        
+        button.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(40)
+            make.centerX.equalTo(label.snp.centerX)
+            make.width.equalTo(label.snp.width)
+            make.height.equalTo(48)
+        }
+        
+        view.layoutIfNeeded()
     }
     func goBack() { browserView.goBack() }
     func goForward() { browserView.goForward() }
@@ -159,8 +181,18 @@ class WebViewController: UIViewController, WebController {
         setupUserScripts()
 
         view.addSubview(browserView)
+        
         browserView.snp.makeConstraints { make in
             make.edges.equalTo(view.snp.edges)
+        }
+        
+        setupErrorView()
+    }
+    
+    private func setupErrorView() {
+        view.addSubview(errorView)
+        errorView.snp.makeConstraints{ make in
+            make.edges.equalTo(browserView.snp.edges)
         }
     }
 

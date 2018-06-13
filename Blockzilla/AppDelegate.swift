@@ -110,7 +110,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let query = getQuery(url: url)
 
-
         if host == "open-url" {
             let urlString = unescape(string: query["url"]) ?? ""
             guard let url = URL(string: urlString) else { return false }
