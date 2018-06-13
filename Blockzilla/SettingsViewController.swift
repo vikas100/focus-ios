@@ -223,7 +223,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         let NO_IDENTITY_ERROR = -7
-        let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? true
+        var deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? false
         let label: String
         let subtitle: String
         
@@ -235,10 +235,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                 label = UIConstants.strings.labelTouchIDLogin
                 subtitle = UIConstants.strings.labelTouchIDLoginDescription
             default:
-                // Unknown biometric type. For now, we handle it the same as Touch ID:
-                label = UIConstants.strings.labelTouchIDLogin
-                subtitle = UIConstants.strings.labelTouchIDLoginDescription
-            
+                // Unknown biometric type
+                return
         }
         
         let toggle = BlockerToggle(label: label, setting: SettingsToggle.biometricLogin, subtitle: subtitle)
