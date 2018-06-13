@@ -219,7 +219,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func createBiometricLoginToggle() {
         if !shouldShowBiometricsToggle() {
-            print("returning")
             return
         }
         
@@ -228,7 +227,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         let label: String
         let subtitle: String
         
-        switch (context.biometryType) {
+        switch context.biometryType {
             case .faceID:
                 label = UIConstants.strings.labelFaceIDLogin
                 subtitle = UIConstants.strings.labelFaceIDLoginDescription
@@ -340,8 +339,6 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                 cell.textLabel?.text = UIConstants.strings.aboutTitle
                 cell.accessibilityIdentifier = "settingsViewController.about"
             } else {
-                print("Section: \(indexPath.section), row: \(indexPath.row)")
-                
                 cell = UITableViewCell(style: .subtitle, reuseIdentifier: "toggleCell")
                 let toggle = toggleForIndexPath(indexPath)
                 cell.textLabel?.text = toggle.label
