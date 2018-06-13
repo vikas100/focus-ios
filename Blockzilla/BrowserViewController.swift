@@ -441,6 +441,9 @@ class BrowserViewController: UIViewController {
             }
         }
 
+        // Decode the URL and fill the urlBar
+        let decodedURL = url.absoluteString.removingPercentEncoding ?? url.absoluteString
+        urlBar.fillUrlBar(text: decodedURL)
         webViewController.load(URLRequest(url: url))
     }
 
