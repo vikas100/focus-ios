@@ -77,6 +77,39 @@ class SettingsTableViewSearchCell: UITableViewCell {
 }
 
 class SettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    enum Section: String {
+        case search, integration, privacy, security, performance, mozilla
+        
+        var numberOfRows: Int {
+            switch self {
+            case .search: return 2
+            case .integration: return 1
+            case .privacy: return 4
+            case .security: return 1
+            case .performance: return 1
+            case .mozilla: return 2
+            }
+        }
+        
+        var headerText: String {
+            switch self {
+            case .search: return UIConstants.strings.settingsSearchTitle
+            case .integration: return UIConstants.strings.toggleSectionIntegration
+            case .privacy: return UIConstants.strings.toggleSectionPrivacy
+            case .security: return UIConstants.strings.toggleSectionSecurity
+            case .performance: return UIConstants.strings.toggleSectionPerformance
+            case .mozilla: return UIConstants.strings.toggleSectionMozilla
+            }
+        }
+        
+        static func getSections(deviceHasBiometrics: Bool) -> [Section] {
+            var sections: [Section] = [.search, integration, privacy, .performance, .mozilla]
+            if deviceHasBiometrics { sections.insert(.security, at: 3) }
+            
+            return sections
+        }
+    }
+    
     fileprivate let tableView = UITableView(frame: .zero, style: .grouped)
 
     // Hold a strong reference to the block detector so it isn't deallocated
@@ -88,6 +121,9 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     private let searchEngineManager: SearchEngineManager
     private var highlightsButton: UIBarButtonItem?
     private let whatsNew: WhatsNewDelegate
+    private lazy var sections = {
+        Section.getSections(deviceHasBiometrics: self.shouldShowBiometricsToggle())
+    }()
     
     private var toggles = [
         BlockerToggle(label: UIConstants.strings.toggleSafari, setting: SettingsToggle.safari),
@@ -188,7 +224,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         
         let NO_IDENTITY_ERROR = -7
-        let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? false
+        let deviceHasNoIdentities = biometricError.map({ $0.code == NO_IDENTITY_ERROR }) ?? true
         let label: String
         let subtitle: String
         
@@ -200,8 +236,10 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
                 label = UIConstants.strings.labelTouchIDLogin
                 subtitle = UIConstants.strings.labelTouchIDLoginDescription
             default:
-                // Unknown biometric type
-                return
+                // Unknown biometric type. For now, we handle it the same as Touch ID:
+                label = UIConstants.strings.labelTouchIDLogin
+                subtitle = UIConstants.strings.labelTouchIDLoginDescription
+            
         }
         
         let toggle = BlockerToggle(label: label, setting: SettingsToggle.biometricLogin, subtitle: subtitle)
@@ -295,8 +333,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
 
             cell = searchCell
         default:
-            
-            if indexPath.section == 5 && indexPath.row == 1 || (indexPath.section == 4 && !shouldShowBiometricsToggle()){
+            if sections[indexPath.section] == .mozilla && indexPath.row == 1 {
                 cell = UITableViewCell(style: .subtitle, reuseIdentifier: "aboutCell")
                 cell.textLabel?.text = UIConstants.strings.aboutTitle
                 cell.accessibilityIdentifier = "settingsViewController.about"
@@ -326,37 +363,11 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if shouldShowBiometricsToggle() {
-            switch section {
-            case 0: return 2 // Search.
-            case 1: return 1 // Integration.
-            case 2: return 4 // Privacy.
-            case 3: return 1 // Opening App.
-            case 4: return 1 // Performance.
-            case 5: return 2 // Mozilla.
-            default:
-                assertionFailure("Invalid section")
-                return 0
-            }
-        } else {
-            switch section {
-            case 0: return 2 // Search.
-            case 1: return 1 // Integration.
-            case 2: return 4 // Privacy.
-            case 3: return 1 // Performance.
-            case 4: return 2 // Mozilla.
-            default:
-                assertionFailure("Invalid section")
-                return 0
-            }
-        }
+        return sections[section].numberOfRows
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        if shouldShowBiometricsToggle() {
-            return 6
-        }
-        return 5
+        return sections.count
     }
     
     func shouldShowBiometricsToggle() -> Bool {
@@ -403,34 +414,11 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let labelText: String
         var groupingOffset = 16
         
-        if shouldShowBiometricsToggle() {
-            switch section {
-            case 0:
-                labelText = UIConstants.strings.settingsSearchTitle
-                groupingOffset = 3
-            case 1: labelText = UIConstants.strings.toggleSectionIntegration
-            case 2: labelText = UIConstants.strings.toggleSectionPrivacy
-            case 3: labelText = UIConstants.strings.toggleSectionAppOpening
-            case 4: labelText = UIConstants.strings.toggleSectionPerformance
-            case 5: labelText = UIConstants.strings.toggleSectionMozilla
-            default: return nil
-            }
-        } else {
-            switch section {
-            case 0:
-                labelText = UIConstants.strings.settingsSearchTitle
-                groupingOffset = 3
-            case 1: labelText = UIConstants.strings.toggleSectionIntegration
-            case 2: labelText = UIConstants.strings.toggleSectionPrivacy
-            case 3: labelText = UIConstants.strings.toggleSectionPerformance
-            case 4: labelText = UIConstants.strings.toggleSectionMozilla
-            default: return nil
-            }
+        if sections[section] == .search {
+            groupingOffset = 3
         }
-        
 
         // Hack: We want the header view's margin to match the cells, so we create an empty
         // cell with a blank space as text to layout the text label. From there, we can define
@@ -440,7 +428,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
         cell.backgroundColor = UIConstants.colors.background
 
         let label = SmartLabel()
-        label.text = labelText
+        label.text = sections[section].headerText
         label.textColor = UIConstants.colors.tableSectionHeader
         label.font = UIConstants.fonts.tableSectionHeader
         cell.contentView.addSubview(label)
@@ -467,27 +455,26 @@ class SettingsViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section != 0 ? 50 : 30
+        return sections[section] != .search ? 50 : 30
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        switch indexPath.section {
-        case 0:
-            if indexPath.row == 0 {
-                let searchSettingsViewController = SearchSettingsViewController(searchEngineManager: searchEngineManager)
-                searchSettingsViewController.delegate = self
-                navigationController?.pushViewController(searchSettingsViewController, animated: true)
-            } else if indexPath.row == 1 {
-                let autcompleteSettingViewController = AutocompleteSettingViewController()
-                navigationController?.pushViewController(autcompleteSettingViewController, animated: true)
-            }
-        case 4:
-            if indexPath.row == 1 {
-                aboutClicked()
-            }
-        default: break
+        switch sections[indexPath.section] {
+            case .search:
+                if indexPath.row == 0 {
+                    let searchSettingsViewController = SearchSettingsViewController(searchEngineManager: searchEngineManager)
+                    searchSettingsViewController.delegate = self
+                    navigationController?.pushViewController(searchSettingsViewController, animated: true)
+                } else if indexPath.row == 1 {
+                    let autcompleteSettingViewController = AutocompleteSettingViewController()
+                    navigationController?.pushViewController(autcompleteSettingViewController, animated: true)
+                }
+            case .mozilla:
+                if indexPath.row == 1 {
+                    aboutClicked()
+                }
+            default: break
         }
     }
 
